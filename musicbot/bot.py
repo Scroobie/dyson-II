@@ -582,7 +582,7 @@ class MusicBot(discord.Client):
             ):
                 newmsg = self.str.get(
                     "on_player_play-onChannel_authorNotInChannel_skipWhenAbsent",
-                    "Skipping next song in {channel}: {title} added by {author} as queuer not in voice!",
+                    "Skipping next song: {title} added by {author} as queuer not in voice!",
                 ).format(
                     channel=player.voice_client.channel.name,
                     title=entry.title,
@@ -601,7 +601,7 @@ class MusicBot(discord.Client):
             else:
                 newmsg = self.str.get(
                     "on_player_play-onChannel",
-                    "Now playing in {channel}: {title} added by {author}!",
+                    "Now playing: {title} added by {author}",
                 ).format(
                     channel=player.voice_client.channel.name,
                     title=entry.title,
@@ -1358,7 +1358,7 @@ class MusicBot(discord.Client):
         e.set_author(
             name=self.user.name,
             url="https://github.com/Just-Some-Bots/MusicBot",
-            icon_url=self.user.avatar_url,
+            icon_url=self.user.avatar.url,
         )
         return e
 
@@ -1374,6 +1374,21 @@ class MusicBot(discord.Client):
             self.str.get("cmd-resetplaylist-response", "\N{OK HAND SIGN}"),
             delete_after=15,
         )
+        
+        
+            async def cmd_tube(self, message, channel, command=None):
+        """
+        Usage:
+            {command_prefix}tube
+
+        Gives a link to the scroobtube
+        """
+        return Response(
+            self.str.get("cmd-tube-response", "https://cytu.be/r/scroobtube"),
+        )
+        
+        
+        
 
     async def cmd_help(self, message, channel, command=None):
         """
@@ -1791,7 +1806,7 @@ class MusicBot(discord.Client):
                         return Response(
                             self.str.get(
                                 "cmd-play-spotify-album-queued",
-                                "Enqueued `{0}` with **{1}** songs.",
+                                "Queued`{0}` with **{1}** songs.",
                             ).format(res["name"], len(res["tracks"]["items"]))
                         )
 
@@ -1835,7 +1850,7 @@ class MusicBot(discord.Client):
                         return Response(
                             self.str.get(
                                 "cmd-play-spotify-playlist-queued",
-                                "Enqueued `{0}` with **{1}** songs.",
+                                "Queued`{0}` with **{1}** songs.",
                             ).format(parts[-1], len(res))
                         )
 
@@ -1881,7 +1896,7 @@ class MusicBot(discord.Client):
                 raise exceptions.PermissionsError(
                     self.str.get(
                         "cmd-play-limit",
-                        "You have reached your enqueued song limit ({0})",
+                        "You have reached your Queuedsong limit ({0})",
                     ).format(permissions.max_songs),
                     expire_in=30,
                 )
@@ -2095,7 +2110,7 @@ class MusicBot(discord.Client):
 
                 reply_text = self.str.get(
                     "cmd-play-playlist-reply",
-                    "Enqueued **%s** songs to be played. Position in queue: %s",
+                    "Queued**%s** songs to be played. Position in queue: %s",
                 )
                 btext = str(listlen - drop_count)
 
@@ -2131,7 +2146,7 @@ class MusicBot(discord.Client):
 
                 reply_text = self.str.get(
                     "cmd-play-song-reply",
-                    "Enqueued `%s` to be played. Position in queue: %s",
+                    "Queued`%s` to be played. Position in queue: %s",
                 )
                 btext = entry.title
 
@@ -2292,7 +2307,7 @@ class MusicBot(discord.Client):
         return Response(
             self.str.get(
                 "cmd-play-playlist-reply-secs",
-                "Enqueued {0} songs to be played in {1} seconds",
+                "Queued{0} songs to be played in {1} seconds",
             ).format(songs_added, fixg(ttime, 1)),
             delete_after=30,
         )
@@ -2344,7 +2359,7 @@ class MusicBot(discord.Client):
             raise exceptions.PermissionsError(
                 self.str.get(
                     "cmd-stream-limit",
-                    "You have reached your enqueued song limit ({0})",
+                    "You have reached your Queuedsong limit ({0})",
                 ).format(permissions.max_songs),
                 expire_in=30,
             )
